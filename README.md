@@ -5,7 +5,7 @@ This script sets up a MySQL database called `ALX_prodev`, creates a `user_data` 
 
 ---
 
-## 📌 Features
+## Features
 
 - Connects to a MySQL server
 - Creates the `ALX_prodev` database if it doesn't exist
@@ -18,7 +18,7 @@ This script sets up a MySQL database called `ALX_prodev`, creates a `user_data` 
 
 ---
 
-## 🛠️ Requirements
+## Requirements
 
 - Python 3.8+
 - MySQL Server
