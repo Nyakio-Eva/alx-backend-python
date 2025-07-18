@@ -20,3 +20,11 @@ class GithubOrgClient:
         return [
             repo["name"] for repo in get_json(self._public_repos_url)
         ]
+
+    """Client to interact with GitHub Organization API."""
+    @staticmethod
+    def has_license(repo: dict, license_key: str) -> bool:
+        """
+        Checks if a repository has a specific license key.
+        """
+        return repo.get("license", {}).get("key") == license_key
