@@ -24,3 +24,24 @@ def access_nested_map(nested_map: Mapping, path: Sequence) -> Any:
     for key in path:
         nested_map = nested_map[key]
     return nested_map
+
+"""
+Utility module for making HTTP requests.
+"""
+
+import requests
+from typing import Dict
+
+
+def get_json(url: str) -> Dict:
+    """
+    Fetches and returns the JSON content from a given URL.
+
+    Args:
+        url (str): The URL to fetch data from.
+
+    Returns:
+        dict: Parsed JSON content from the response.
+    """
+    response = requests.get(url)
+    return response.json()
