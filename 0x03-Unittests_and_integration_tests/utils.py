@@ -2,7 +2,8 @@
 """
 This module provides utility functions for accessing nested data structures.
 """
-
+import requests
+from typing import Dict
 
 from typing import Any, Mapping, Sequence
 
@@ -29,8 +30,7 @@ def access_nested_map(nested_map: Mapping, path: Sequence) -> Any:
 Utility module for making HTTP requests.
 """
 
-import requests
-from typing import Dict
+
 
 
 def get_json(url: str) -> Dict:
