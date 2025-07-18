@@ -81,16 +81,17 @@ class TestGithubOrgClient(unittest.TestCase):
         
    
         
-@parameterized_class([
-    {
-        "org_payload": fixtures.ORG_PAYLOAD,
-        "repos_payload": fixtures.REPOS_PAYLOAD,
-        "expected_repos": fixtures.EXPECTED_REPOS,
-        "apache2_repos": fixtures.APACHE2_REPOS,
-    }
-])
+
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration tests for GithubOrgClient"""
+    @parameterized_class([
+        {
+            "org_payload": fixtures.ORG_PAYLOAD,
+            "repos_payload": fixtures.REPOS_PAYLOAD,
+            "expected_repos": fixtures.EXPECTED_REPOS,
+            "apache2_repos": fixtures.APACHE2_REPOS,
+        }
+   ])
 
     @classmethod
     def setUpClass(cls):
