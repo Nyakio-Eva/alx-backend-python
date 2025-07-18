@@ -43,3 +43,23 @@ class TestGithubOrgClient(unittest.TestCase):
 
             self.assertEqual(result, payload["repos_url"])
             mock_org.assert_called_once()
+            
+    @patch("client.get_json")
+    def test_public_repos(self, mock_get_json):
+        """Test that public_repos returns expected repo names and calls correct methods"""
+        # Mock repo payload
+        mock_payload = [
+            {"name": "repo1"},
+            {"name": "repo2"},
+            {"name": "repo3"}
+        ]
+        mock_get_json.return_value = mock_payload
+
+        # Patch _public_repos_url contextually
+        with patch.object(GithubOrgClient, "_public_repos_url", new="https://api.github.com/orgs/testorg/repos") as mock_url:
+            client = GithubOrgClient("testorg")
+            result = client.public_repos()
+
+            # Assertions
+            self.assertEqual(result, ["repo1", "repo2", "repo3"])
+            mock_get_json.assert_called_once_with("https://api.github.com/orgs/testorg/repos")        
