@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'chats',
     
 ]
+AUTH_USER_MODEL = 'chats.CustomUser'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -84,6 +86,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'messaging_app.wsgi.application'
+
 
 
 # Database
