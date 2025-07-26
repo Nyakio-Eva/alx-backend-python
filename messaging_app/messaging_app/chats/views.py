@@ -8,11 +8,16 @@ from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404, render
 from rest_framework.permissions import IsAuthenticated
 from messaging_app.chats.permissions import IsOwnerOrParticipant
+from .permissions import IsParticipantOfConversation
 
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all().prefetch_related('participants', 'messages')
     serializer_class = ConversationSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticated, IsParticipantOfConversation]
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Conversation.objects.filter(participants=user)
 
     def perform_create(self, serializer):
         """
@@ -33,3 +38,9 @@ class MessageViewSet(viewsets.ModelViewSet):
         ) | Message.objects.filter(
             recipient=self.request.user
         )
+        
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Message.objects.filter(conversation__participants=user)
+    
