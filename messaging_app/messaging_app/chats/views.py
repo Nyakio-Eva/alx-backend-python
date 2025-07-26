@@ -9,6 +9,10 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework.permissions import IsAuthenticated
 from messaging_app.chats.permissions import IsOwnerOrParticipant
 from .permissions import IsParticipantOfConversation
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
+from .pagination import MessagePagination
+from .filters import MessageFilter
 
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all().prefetch_related('participants', 'messages')
@@ -30,8 +34,15 @@ class ConversationViewSet(viewsets.ModelViewSet):
 class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated, IsOwnerOrParticipant]
-
+    permission_classes = [IsAuthenticated, IsOwnerOrParticipant, IsParticipantOfConversation]
+    pagination_class = MessagePagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_class = MessageFilter
+    ordering_fields = ['timestamp']
+    ordering = ['-timestamp']
+    
+    
+    
     def get_queryset(self):
         return Message.objects.filter(
             sender=self.request.user
