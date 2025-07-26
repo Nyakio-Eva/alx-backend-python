@@ -6,7 +6,8 @@ from .serializers import ConversationSerializer, MessageSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404, render
-
+from rest_framework.permissions import IsAuthenticated
+from messaging_app.chats.permissions import IsOwnerOrParticipant
 
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all().prefetch_related('participants', 'messages')
@@ -22,14 +23,13 @@ class ConversationViewSet(viewsets.ModelViewSet):
         conversation.participants.set(participants_ids)
         
 class MessageViewSet(viewsets.ModelViewSet):
-    queryset = Message.objects.all().select_related('sender', 'conversation')
+    queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [IsAuthenticated, IsOwnerOrParticipant]
 
-    def perform_create(self, serializer):
-        """
-        Save a new message with the sender as the authenticated user (or test user).
-        """
-        # NOTE: Update this to self.request.user if you enable authentication
-        sender = self.request.user if self.request.user.is_authenticated else None
-        serializer.save(sender=sender)        
+    def get_queryset(self):
+        return Message.objects.filter(
+            sender=self.request.user
+        ) | Message.objects.filter(
+            recipient=self.request.user
+        )
