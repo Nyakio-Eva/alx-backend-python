@@ -1,0 +1,27 @@
+
+[
+  {
+    "name": "POST /api/auth/login/",
+    "description": "Authenticate user and retrieve JWT token",
+    "request": {
+      "method": "POST",
+      "url": "http://localhost:8000/api/auth/login/",
+      "body": {
+        "email": "evaly@gmail.com",
+        "password": "testpassword"
+      }
+    },
+    "response": {
+      "status": 200,
+      "body": {
+       "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc1MzY5MTEzMiwiaWF0IjoxNzUzNjA0NzMyLCJqdGkiOiI0ZmMyYTQ3YWJhNDI0NTY0YjBiNWJjNmM1YmJhYzAzOSIsInVzZXJfaWQiOiI3NTk2ZjVkMi1mNThiLTQ3YjctYWY1ZS1iMjg0NDI0OTIyODcifQ.wv_2MBJ77yCqx613ZYTDGragFmt26z0Zm-iJ-ihfi9o",
+       "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUzNjA2NTMyLCJpYXQiOjE3NTM2MDQ3MzIsImp0aSI6ImJhODM2NWVjYjFmMjRhZDVhNDA3ZGU1ZTY3MTkxMWNjIiwidXNlcl9pZCI6Ijc1OTZmNWQyLWY1OGItNDdiNy1hZjVlLWIyODQ0MjQ5MjI4NyJ9.8Xg1yPlvkfNi6v9Bqs7_rjvZ6In20gvCwzS47a-lf5k"
+        } 
+    }
+  },
+  {
+    "name": "POST /api/chats/conversations/",
+    "description": "Create a conversation"
+    
+  }
+]
