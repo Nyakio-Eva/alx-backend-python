@@ -73,3 +73,24 @@ class OffensiveLanguageMiddleware:
         if x_forwarded_for:
             return x_forwarded_for.split(',')[0].strip()
         return request.META.get('REMOTE_ADDR')        
+    
+class RolePermissionMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Only apply restriction to certain protected paths
+        if '/chat/manage/' in request.path or '/admin-action/' in request.path:
+            user = request.user
+            if not user.is_authenticated:
+                return HttpResponseForbidden("Authentication required.")
+            
+            # Case 1: Using is_staff or is_superuser
+            if not user.is_staff and not user.is_superuser:
+                return HttpResponseForbidden("Access denied: Admins or moderators only.")
+            
+            # Optional Case 2: Using a 'role' field in a custom user model
+            # if not hasattr(user, 'role') or user.role not in ['admin', 'moderator']:
+            #     return HttpResponseForbidden("Access denied: Admins or moderators only.")
+
+        return self.get_response(request)    
