@@ -13,6 +13,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter
 from .pagination import MessagePagination
 from .filters import MessageFilter
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 class ConversationViewSet(viewsets.ModelViewSet):
     queryset = Conversation.objects.all().prefetch_related('participants', 'messages')
@@ -55,5 +57,12 @@ class MessageViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Message.objects.filter(conversation__participants=user)
     
+   
+# Function-based view
+@cache_page(60)  # 60 seconds
+def message_list(request):
+    messages = Message.objects.all()
+    return render(request, 'messaging/message_list.html', {'messages': messages})    
+
     
     
