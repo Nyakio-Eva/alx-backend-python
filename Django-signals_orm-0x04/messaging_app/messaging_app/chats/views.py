@@ -55,3 +55,5 @@ class MessageViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Message.objects.filter(conversation__participants=user)
     
+    
+    
