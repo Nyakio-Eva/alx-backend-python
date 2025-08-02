@@ -33,3 +33,4 @@ class MessageHistory(models.Model):
 
     def __str__(self):
         return f"History of Message {self.message.id} at {self.edited_at}"
+
