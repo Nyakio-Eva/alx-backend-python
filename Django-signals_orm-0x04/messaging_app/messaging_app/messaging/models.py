@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+
 User = get_user_model()
 
 class Message(models.Model):
@@ -12,9 +13,22 @@ class Message(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False) 
+    
+    parent_message = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='replies'
+    )
 
     def __str__(self):
         return f"From {self.sender} to {self.receiver} at {self.timestamp}"
+    
+    @property
+    def is_reply(self):
+        return self.parent_message is not None
+
 
 
 class Notification(models.Model):
