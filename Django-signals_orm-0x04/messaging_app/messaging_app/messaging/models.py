@@ -2,6 +2,8 @@
 # Create your models here.
 from django.db import models
 from django.contrib.auth import get_user_model
+from .managers import UnreadMessagesManager
+
 
 
 User = get_user_model()
@@ -13,6 +15,10 @@ class Message(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False) 
+    read = models.BooleanField(default=False)
+    
+    objects = models.Manager() #default
+    unread = UnreadMessagesManager()
     
     parent_message = models.ForeignKey(
         'self',

@@ -37,3 +37,8 @@ def get_thread(message):
     }
     return thread
 
+def inbox_view(request):
+    user = request.user
+    unread_messages = Message.unread.for_user(user)
+    
+    
