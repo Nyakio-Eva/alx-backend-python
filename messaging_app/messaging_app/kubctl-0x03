@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+echo "Applying updated deployment..."
+kubectl apply -f blue_deployment.yaml
+
+echo "Monitoring rollout status..."
+kubectl rollout status deployment/django-blue
+
+echo "Checking running pods..."
+kubectl get pods -l app=django,version=blue -o wide
+
+echo "Testing for downtime..."
+SERVICE_IP=$(minikube ip)
+SERVICE_PORT=80   # assuming you exposed via Ingress or NodePort
+
+# Run curl 20 times in a loop
+for i in {1..20}; do
+  if curl -s --fail http://$SERVICE_IP:$SERVICE_PORT/api/ > /dev/null; then
+    echo "[$i]  Request succeeded"
+  else
+    echo "[$i] Request failed"
+  fi
+  sleep 2
+done
+
+echo "Rolling update complete!"

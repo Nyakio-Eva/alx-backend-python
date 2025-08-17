@@ -7,6 +7,11 @@ metadata:
     version: blue
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: django
@@ -19,6 +24,6 @@ spec:
     spec:
       containers:
       - name: django
-        image: your-django-image:blue   # old version image
+        image: your-django-image:2.0   # updated version
         ports:
         - containerPort: 8000
