@@ -3,19 +3,19 @@ pipeline {
         docker { image 'python:3.11-slim' }
     }
 
-
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/Nyakio-Eva/alx-backend-python.git'
+                    url: 'https://github.com/Nyakio-Eva/alx-backend-python.git',
+                    credentialsId: 'github-credentials'
             }
         }
 
         stage('Install dependencies') {
             steps {
                 dir('messaging_app/messaging_app') {
-                    sh 'pip install -r requirements.txt'
+                    sh 'pip3 install -r messaging_app/requirements.txt'
                 }
             }
         }
@@ -23,7 +23,12 @@ pipeline {
         stage('Run Tests') {
             steps {
                 dir('messaging_app/messaging_app') {
-                    sh 'pytest --maxfail=1 --disable-warnings -q'
+                    sh 'pytest --maxfail=1 --disable-warnings -q --junitxml=report.xml'
+                }
+            }
+            post {
+                always {
+                    junit 'report.xml'
                 }
             }
         }
