@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Nyakio-Eva/alx-backend-python.git'
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                dir('messaging_app/messaging_app') {
+                    sh 'pip install -r requirements.txt'
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                dir('messaging_app/messaging_app') {
+                    sh 'pytest --maxfail=1 --disable-warnings -q'
+                }
+            }
+        }
+    }
+}

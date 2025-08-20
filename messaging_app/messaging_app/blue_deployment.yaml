@@ -24,6 +24,6 @@ spec:
     spec:
       containers:
       - name: django
-        image: your-django-image:2.0   # updated version
+        image: your-django-image:2.0   # updated version 
         ports:
         - containerPort: 8000
